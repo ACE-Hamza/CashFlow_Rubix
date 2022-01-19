@@ -51,6 +51,8 @@ def signup():
         # session["uname"] = uname
         sql = """INSERT INTO users (email, uname, name, pswd)
                  VALUES (?, ?, ?, ?)"""
+        sqltable = "CREATE TABLE '{un}' (item_id integer PRIMARY KEY, item_name text NOT NULL, category text NOT NULL, price FLOAT NOT NULL, date DATE NOT NULL, time TIME NOT NULL)".format(un = uname)
+        cursor = cursor.execute(sqltable)         
         cursor = cursor.execute(sql, (email, uname, name, pswd))
         conn.commit()
         return redirect(url_for("login"))
@@ -66,6 +68,10 @@ def homepage():
 @app.route("/expense.html")
 def expense():
     return render_template("expense.html")
+
+@app.route("/expense.html")
+def expense_data():
+    return rediret(url_for("expense_history.html"))
 
 @app.route("/logout")
 def logout():
