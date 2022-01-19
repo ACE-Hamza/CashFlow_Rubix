@@ -18,7 +18,23 @@ def sign():
 	return redirect(url_for("signup"))
 
 @app.route("/login.html")
+def log():
+    return render_template("login.html")
+
+@app.route("/login.html", methods=["POST", "GET"])
 def login():
+    l_uname = request.form["uname"]
+    l_pswd = request.form["pswd"]
+    conn = db_connection()
+    cursor = conn.cursor()
+    sql = "SELECT uname, pswd from users WHERE uname = '{un}' AND pswd = '{pw}'".format(un = l_uname, pw = l_pswd)
+    
+    rows = cursor.execute(sql)
+    rows = rows.fetchall()
+    if len(rows) == 1:
+        return redirect(url_for("homepage"))
+    else:
+        return redirect(url_for("signup"))
     return render_template("login.html")
 
 @app.route("/signup.html", methods=["POST", "GET"])
@@ -27,24 +43,34 @@ def signup():
     cursor = conn.cursor()
 
     if request.method == "POST":
-        session.permanent = True
+        # session.permanent = True
         uname = request.form["uname"]
         email = request.form["email"]
         name = request.form["name"]
         pswd = request.form["pswd"]
-        # session["user"] = uname
+        # session["uname"] = uname
         sql = """INSERT INTO users (email, uname, name, pswd)
                  VALUES (?, ?, ?, ?)"""
         cursor = cursor.execute(sql, (email, uname, name, pswd))
         conn.commit()
-        return redirect(url_for("homepage"))
-    # else:
-    #     if "user" in session:
-    #         return redirect(url_for("user"))
+        return redirect(url_for("login"))
+    else:
+        if "uname" in session:
+            return redirect(url_for("homepage"))
     return render_template("signup.html")
     
 @app.route("/homepage.html")
 def homepage():
     return render_template("homepage.html")
+
+@app.route("/expense.html")
+def expense():
+    return render_template("expense.html")
+
+@app.route("/logout")
+def logout():
+	session.pop("uname", None)
+	return redirect(url_for("login"))
+
 if __name__ == '__main__':
 	app.run(debug=True)
