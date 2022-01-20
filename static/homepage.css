@@ -1,0 +1,30 @@
+.flex-container{
+  display: flex; 
+  justify-content: center; 
+  flex-wrap: wrap;
+  
+}
+
+.div chart{
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /* max-width: 300px; */
+  text-align: center;
+  width: 10%;
+  height: 10%; 
+  padding: 10px; 
+  margin: 20px;
+
+}
+
+.div TotalAMT {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 30px;
+    text-align: center;
+    padding: 10px; 
+   
+  }
+
+  .div contact{
+    background-color: black;
+  }
